@@ -1,15 +1,12 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Users {
+export class Class {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  password: string;
-
-  @Column()
-  email: string;
+  name: string;
 
   @Column()
   created_datetime: string;
@@ -17,8 +14,6 @@ export class Users {
   @Column()
   updated_datetime: string;
 
-  @Column()
-  user_id: number;
   // @Column({ default: true })
   // isActive: boolean;
 }
