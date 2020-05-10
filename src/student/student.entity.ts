@@ -24,7 +24,7 @@ export class Student {
   updated_datetime: string;
 
   @Column()
-  class_id: string;
+  class_id: number;
 
   // @Column({ default: true })
   // isActive: boolean;

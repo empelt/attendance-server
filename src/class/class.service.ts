@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateClassDto } from './dto/create-class.dto';
+import { UpdateClassDto } from './dto/update-class.dto';
 import { Class } from './class.entity';
 
 @Injectable()
@@ -12,10 +13,29 @@ export class ClassService {
   ) {}
 
   create(createClassDto: CreateClassDto): Promise<Class> {
+    const now = new Date();
     const classes = new Class();
-    // user.firstName = createUserDto.firstName;
-    // user.lastName = createUserDto.lastName;
+    classes.id = createClassDto.id;
+    classes.name = createClassDto.name;
+    classes.created_datetime = now
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
+    classes.updated_datetime = now
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
+    return this.classRepository.save(classes);
+  }
 
+  async update(updateClassDto: UpdateClassDto): Promise<Class> {
+    const now = new Date();
+    const classes = await this.classRepository.findOne({id: updateClassDto.id})
+    classes.name = updateClassDto.name;
+    classes.updated_datetime = now
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
     return this.classRepository.save(classes);
   }
 

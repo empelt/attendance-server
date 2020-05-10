@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
+import { UpdateClassDto } from './dto/update-class.dto';
 import { Class } from './class.entity';
 import { ClassService } from './class.service';
 
@@ -7,9 +8,14 @@ import { ClassService } from './class.service';
 export class ClassController {
   constructor(private readonly classService: ClassService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createClassDto: CreateClassDto): Promise<Class> {
     return this.classService.create(createClassDto);
+  }
+
+  @Post('update')
+  update(@Body() updateClassDto: UpdateClassDto): Promise<Class> {
+    return this.classService.update(updateClassDto);
   }
 
   @Get()
