@@ -7,9 +7,14 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createUserDto: CreateUserDto): Promise<Users> {
     return this.usersService.create(createUserDto);
+  }
+
+  @Post('update')
+  update(@Body() createUserDto: CreateUserDto): Promise<Users> {
+    return this.usersService.update(createUserDto);
   }
 
   @Get()
