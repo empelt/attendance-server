@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TestModule } from './test/test.module';
 import { UsersModule } from './users/users.module';
 import { StudentModule } from './student/student.module';
 import { ClassModule } from './class/class.module';
@@ -10,10 +9,10 @@ import { Connection } from 'typeorm';
 
 
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
-    TestModule,
     UsersModule,
     StudentModule,
     ClassModule,
@@ -22,6 +21,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       type: 'mysql',
       host: '127.0.0.1',
       port: 3306,
+      //extra: {"socketPath": '/cloudsql/${"attendance-275602:asia-east1:attendance"}'},
+      //socketPath: `/cloudsql/${"attendance-275602:asia-east1:attendance"}`,
       username: 'root',
       password: 'techf0rward',
       database: 'new_schema',
@@ -29,6 +30,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       // synchronize: true,
       autoLoadEntities: true,
     }),
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
