@@ -10,11 +10,11 @@ export class UsersService {
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
-  ) {}
+  ) { }
 
   create(createUserDto: CreateUserDto): Promise<Users> {
-    var now = new Date();
-    
+    const now = new Date();
+
     const user = new Users();
     user.id = createUserDto.id;
     user.password = createUserDto.password;
@@ -31,12 +31,18 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  update(updateUserDto: UpdateUserDto): Promise<Users> {
-    const user = new Users();
+  async update(updateUserDto: UpdateUserDto): Promise<Users> {
+    const now = new Date();
+    const user = await this.usersRepository.findOne({id: updateUserDto.id})
     //クライアントからの取得したIDを元にユーザを検索
     //クライアントから取得したパラメータを設定
-
-
+    user.password = updateUserDto.password;
+    user.email = updateUserDto.email;
+    user.updated_datetime = now
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
+    user.user_id = updateUserDto.user_id;
     return this.usersRepository.save(user);
   }
 

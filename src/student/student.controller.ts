@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateStudentDto } from './dto/update-student.dto';
+import { FindByClassIdStudentDto } from './dto/findbyclassid-student.dto';
 import { Student } from './student.entity';
 import { StudentService } from './student.service';
 
@@ -7,9 +9,19 @@ import { StudentService } from './student.service';
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateStudentDto): Promise<Student> {
-    return this.studentService.create(createUserDto);
+  @Post('create')
+  create(@Body() createStudentDto: CreateStudentDto): Promise<Student> {
+    return this.studentService.create(createStudentDto);
+  }
+
+  @Post('update')
+  update(@Body() updateUserDto: UpdateStudentDto): Promise<Student> {
+    return this.studentService.update(updateUserDto);
+  }
+
+  @Post('findbyclassid')
+  findbyclassid(@Body() findbyclassidStudentDto: FindByClassIdStudentDto): Promise<Student[]> {
+    return this.studentService.findbyclassid(findbyclassidStudentDto);
   }
 
   @Get()
