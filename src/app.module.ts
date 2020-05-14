@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TestModule } from './test/test.module';
@@ -7,6 +6,8 @@ import { StudentModule } from './student/student.module';
 import { ClassModule } from './class/class.module';
 import { AttendanceModule } from './attendance/attendance.module';
 import { Connection } from 'typeorm';
+// import { CorsMiddleware } from './cors.middleware';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 
 
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -35,5 +36,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 })
 export class AppModule {
   constructor(private connection: Connection) {}
+  // configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
+  //   consumer.apply(CorsMiddleware).forRoutes('*');
+  // }
 }
 
