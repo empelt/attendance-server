@@ -1,4 +1,4 @@
-export class UpdateClassDto {
+export class FindByClassGradeClassDto {
     id: number;
     name: string;
     created_datetime: string;

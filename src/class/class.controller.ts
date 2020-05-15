@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
+import { FindByClassGradeClassDto } from './dto/findbygrade.dto';
 import { Class } from './class.entity';
 import { ClassService } from './class.service';
 
@@ -26,6 +27,10 @@ export class ClassController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Class> {
     return this.classService.findOne(id);
+  }
+  @Post('findbyclassgrade')
+  findbyclassgrade(@Body() findbyclassgradeClassDto: FindByClassGradeClassDto): Promise<Class[]> {
+    return this.classService.findbyclassgrade(findbyclassgradeClassDto);
   }
 
   @Delete(':id')

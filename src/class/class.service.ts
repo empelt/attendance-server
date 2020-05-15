@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
+import { FindByClassGradeClassDto } from './dto/findbygrade.dto';
 import { Class } from './class.entity';
 
 @Injectable()
@@ -25,6 +26,8 @@ export class ClassService {
       .toISOString()
       .slice(0, 19)
       .replace('T', ' ');
+      classes.class_id = createClassDto.class_id;
+      classes.grade = createClassDto.grade;
     return this.classRepository.save(classes);
   }
 
@@ -36,11 +39,17 @@ export class ClassService {
       .toISOString()
       .slice(0, 19)
       .replace('T', ' ');
+    classes.class_id = updateClassDto.class_id;
+    classes.grade = updateClassDto.grade;
     return this.classRepository.save(classes);
   }
 
   async findAll(): Promise<Class[]> {
     return this.classRepository.find();
+  }
+
+  async findbyclassgrade(findbyclassgradeClassDto: FindByClassGradeClassDto): Promise<Class[]> {
+    return this.classRepository.find({grade: findbyclassgradeClassDto.grade});
   }
 
   findOne(id: string): Promise<Class> {
