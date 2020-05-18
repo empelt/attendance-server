@@ -4,6 +4,7 @@ import { Repository, createQueryBuilder, getRepository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { FindByClassIdStudentDto } from './dto/findbyclassid-student.dto';
+import { FindByClassId2StudentDto } from './dto/findbyclassid2-student.dto';
 import { Student } from './student.entity';
 
 @Injectable()
@@ -50,6 +51,10 @@ export class StudentService {
 
   async findbyclassid(findbyclassidStudentDto: FindByClassIdStudentDto): Promise<Student[]> {
     return this.studentRepository.find({class_id: findbyclassidStudentDto.class_id});
+  }
+
+  async findbyclassid2(findbyclassid2StudentDto: FindByClassId2StudentDto): Promise<Student[]> {
+    return this.studentRepository.find({class_id: findbyclassid2StudentDto.class_id});
   }
 
   async findAll(): Promise<Student[]> {
