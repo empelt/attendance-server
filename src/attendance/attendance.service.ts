@@ -15,7 +15,7 @@ export class AttendanceService {
   constructor(
     @InjectRepository(Attendance)
     private readonly attendanceRepository: Repository<Attendance>,
-  ) { }
+  ) {}
 
   create(createAttendanceDto: CreateAttendanceDto): Promise<Attendance> {
     const now = new Date();
@@ -38,7 +38,9 @@ export class AttendanceService {
 
   async update(updateAttendanceDto: UpdateAttendanceDto): Promise<Attendance> {
     const now = new Date();
-    const attendance = await this.attendanceRepository.findOne({ id: updateAttendanceDto.id })
+    const attendance = await this.attendanceRepository.findOne({
+      id: updateAttendanceDto.id,
+    });
     //クライアントからの取得したIDを元にユーザを検索
     //クライアントから取得したパラメータを設定
     attendance.type = updateAttendanceDto.type;
@@ -52,9 +54,13 @@ export class AttendanceService {
     return this.attendanceRepository.save(attendance);
   }
 
-  async updatetype(updatetypeAttendanceDto: UpdateTypeAttendanceDto): Promise<Attendance> {
+  async updatetype(
+    updatetypeAttendanceDto: UpdateTypeAttendanceDto,
+  ): Promise<Attendance> {
     const now = new Date();
-    const attendance = await this.attendanceRepository.findOne({ id: updatetypeAttendanceDto.id })
+    const attendance = await this.attendanceRepository.findOne({
+      id: updatetypeAttendanceDto.id,
+    });
     attendance.type = updatetypeAttendanceDto.type;
     attendance.updated_datetime = now
       .toISOString()
@@ -63,9 +69,13 @@ export class AttendanceService {
     return this.attendanceRepository.save(attendance);
   }
 
-  async updateremark(updateremarkAttendanceDto: UpdateRemarkAttendanceDto): Promise<Attendance> {
+  async updateremark(
+    updateremarkAttendanceDto: UpdateRemarkAttendanceDto,
+  ): Promise<Attendance> {
     const now = new Date();
-    const attendance = await this.attendanceRepository.findOne({ id: updateremarkAttendanceDto.id })
+    const attendance = await this.attendanceRepository.findOne({
+      id: updateremarkAttendanceDto.id,
+    });
     attendance.remark = updateremarkAttendanceDto.remark;
     attendance.updated_datetime = now
       .toISOString()
@@ -74,28 +84,30 @@ export class AttendanceService {
     return this.attendanceRepository.save(attendance);
   }
 
-
-
-  async findbyclassid(id: Number): Promise<any> {
+  async findbyclassid(id: string): Promise<any> {
     // const user = await this.attendanceRepository.createQueryBuilder("attendance")
     //   .innerJoinAndSelect("student.attendances", "attendance");
-    return this.attendanceRepository.createQueryBuilder('attendance')
-      // ^^^^^^^^^^^^^^^^
-      .leftJoinAndSelect(
-        'attendance.student',
-        'student',
-      );
-    
+    return this.attendanceRepository
+      .createQueryBuilder('attendance')
+      .leftJoinAndSelect('attendance.student', 'student')
+      .where('sutdent.class_id = :class_id', { class_id: id })
+      .getMany();
+    // return this.attendanceRepository.find({
+    //   relations: ['student'],
+    // });
+
   }
 
   // async findbyclassid2(findbyclassid2SAttendanceDto: FindByClassId2AttendanceDto): Promise<Attendance[]> {
   //   return this.attendanceRepository.find({class_id: findbyclassid2StudentDto.class_id});
   // }
 
-
-
-  async findbystudentid(findbystudentidattendanceDto: FindByStudentIdAttendanceDto): Promise<Attendance[]> {
-    return this.attendanceRepository.find({ studentId: findbystudentidattendanceDto.studentId });
+  async findbystudentid(
+    findbystudentidattendanceDto: FindByStudentIdAttendanceDto,
+  ): Promise<Attendance[]> {
+    return this.attendanceRepository.find({
+      studentId: findbystudentidattendanceDto.studentId,
+    });
   }
 
   async findAll(): Promise<Attendance[]> {

@@ -32,4 +32,9 @@ export class StudentController {
   remove(@Param('id') id: string): Promise<void> {
     return this.studentService.remove(id);
   }
+  @Get('findbyclassid/:id')
+  findbyclassid(@Param('id') id: string): Promise<any> {
+    console.log('helo');
+    return this.studentService.findbyclassid(id);
+  }
 }

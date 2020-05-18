@@ -34,7 +34,9 @@ export class StudentService {
 
   async update(updateStudentDto: UpdateStudentDto): Promise<Student> {
     const now = new Date();
-    const student = await this.studentRepository.findOne({id: updateStudentDto.id})
+    const student = await this.studentRepository.findOne({
+      id: updateStudentDto.id,
+    });
     student.first_name = updateStudentDto.first_name;
     student.last_name = updateStudentDto.last_name;
     student.kana_first_name = updateStudentDto.kana_first_name;
@@ -57,5 +59,17 @@ export class StudentService {
 
   async remove(id: string): Promise<void> {
     await this.studentRepository.delete(id);
+  }
+  async findbyclassid(id: string): Promise<any> {
+    // const user = await this.attendanceRepository.createQueryBuilder("attendance")
+    //   .innerJoinAndSelect("student.attendances", "attendance");
+    return this.studentRepository
+      .createQueryBuilder('student')
+      .leftJoinAndSelect('student.attendances', 'attendance')
+      .where('class_id = :class_id', { class_id: id })
+      .getMany();
+    // return this.attendanceRepository.find({
+    //   relations: ['student'],
+    // });
   }
 }

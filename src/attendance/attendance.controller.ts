@@ -39,7 +39,7 @@ export class AttendanceController {
   }
 
   @Get('findbyclassid/:id')
-  findbyclassid(@Param('id') id: Number): Promise<Attendance[]> {
+  findbyclassid(@Param('id') id: string): Promise<any> {
     console.log("helo")
     return this.attendanceService.findbyclassid(id);
   }
