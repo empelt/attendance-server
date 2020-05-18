@@ -3,6 +3,5 @@ export class FindByClassGradeClassDto {
     name: string;
     created_datetime: string;
     updated_datetime: string;
-    class_id: number;
     grade: number;
 }

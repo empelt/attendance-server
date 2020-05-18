@@ -15,9 +15,6 @@ export class Class {
   updated_datetime: string;
 
   @Column()
-  class_id: number;
-
-  @Column()
   grade: number;
 
   // @Column({ default: true })

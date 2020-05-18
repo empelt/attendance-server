@@ -20,6 +20,9 @@ export class Attendance {
   @Column()
   student_id: number;
 
+  @Column()
+  remark: string;
+
   // @Column({ default: true })
   // isActive: boolean;
 }

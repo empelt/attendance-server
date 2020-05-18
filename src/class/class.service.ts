@@ -26,7 +26,6 @@ export class ClassService {
       .toISOString()
       .slice(0, 19)
       .replace('T', ' ');
-      classes.class_id = createClassDto.class_id;
       classes.grade = createClassDto.grade;
     return this.classRepository.save(classes);
   }
@@ -39,7 +38,6 @@ export class ClassService {
       .toISOString()
       .slice(0, 19)
       .replace('T', ' ');
-    classes.class_id = updateClassDto.class_id;
     classes.grade = updateClassDto.grade;
     return this.classRepository.save(classes);
   }

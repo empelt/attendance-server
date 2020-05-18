@@ -5,4 +5,5 @@ export class CreateAttendanceDto {
   created_datetime: string;
   updated_datetime: string;
   student_id: number;
+  remark: string;
 }

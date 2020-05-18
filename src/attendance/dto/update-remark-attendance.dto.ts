@@ -1,4 +1,4 @@
-export class UpdateAttendanceDto {
+export class UpdateRemarkAttendanceDto {
     id: number;
     type: number;
     date: string;

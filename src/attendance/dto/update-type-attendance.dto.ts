@@ -1,8 +1,9 @@
-export class UpdateStatusAttendanceDto {
+export class UpdateTypeAttendanceDto {
     id: number;
     type: number;
     date: string;
     created_datetime: string;
     updated_datetime: string;
     student_id: number;
+    remark: string;
 }

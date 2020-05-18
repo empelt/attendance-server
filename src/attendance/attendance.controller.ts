@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
-import { UpdateStatusAttendanceDto } from './dto/update-status-attendance.dto';
+import { UpdateTypeAttendanceDto } from './dto/update-type-attendance.dto';
+import { UpdateRemarkAttendanceDto } from './dto/update-remark-attendance.dto';
+import { FindByStudentIdAttendanceDto } from './dto/findbystudentid.dto';
 import { Attendance } from './attendance.entity';
 import { AttendanceService } from './attendance.service';
 
@@ -19,9 +21,19 @@ export class AttendanceController {
     return this.attendanceService.update(updateAttendanceDto);
   }
 
-  @Post('updatestatus')
-  updatestatus(@Body() updatestatusAttendanceDto: UpdateStatusAttendanceDto): Promise<Attendance> {
-    return this.attendanceService.updatestatus(updatestatusAttendanceDto);
+  @Post('updatetype')
+  updatetype(@Body() updatetypeAttendanceDto: UpdateTypeAttendanceDto): Promise<Attendance> {
+    return this.attendanceService.updatetype(updatetypeAttendanceDto);
+  }
+
+  @Post('updateremark')
+  updateremark(@Body() updateremarkAttendanceDto: UpdateRemarkAttendanceDto): Promise<Attendance> {
+    return this.attendanceService.updateremark(updateremarkAttendanceDto);
+  }
+
+  @Post('findbystudentid')
+  findbystudentid(@Body() findbystudentidattendanceDto: FindByStudentIdAttendanceDto): Promise<Attendance[]> {
+    return this.attendanceService.findbystudentid(findbystudentidattendanceDto);
   }
 
   @Get()
