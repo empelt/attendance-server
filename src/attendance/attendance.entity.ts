@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Student } from '../student/student.entity'
 
 @Entity()
 export class Attendance {
@@ -18,11 +19,13 @@ export class Attendance {
   updated_datetime: string;
 
   @Column()
-  student_id: number;
+  studentId: number;
 
   @Column()
   remark: string;
 
+  @ManyToOne(type => Student, student => student.attendances)
+    student: Student;
   // @Column({ default: true })
   // isActive: boolean;
 }

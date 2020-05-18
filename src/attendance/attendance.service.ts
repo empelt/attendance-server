@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, createQueryBuilder } from 'typeorm';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
 import { FindByStudentIdAttendanceDto } from './dto/findbystudentid.dto';
+import { FindByClassIdAttendanceDto } from './dto/findbyclassid.dto';
+import { FindByClassId2AttendanceDto } from './dto/findbyclassid2.dto';
 import { UpdateTypeAttendanceDto } from './dto/update-type-attendance.dto';
 import { UpdateRemarkAttendanceDto } from './dto/update-remark-attendance.dto';
 import { Attendance } from './attendance.entity';
@@ -13,7 +15,7 @@ export class AttendanceService {
   constructor(
     @InjectRepository(Attendance)
     private readonly attendanceRepository: Repository<Attendance>,
-  ) {}
+  ) { }
 
   create(createAttendanceDto: CreateAttendanceDto): Promise<Attendance> {
     const now = new Date();
@@ -29,14 +31,14 @@ export class AttendanceService {
       .toISOString()
       .slice(0, 19)
       .replace('T', ' ');
-    attendance.student_id = createAttendanceDto.student_id;
+    attendance.studentId = createAttendanceDto.studentId;
     attendance.remark = createAttendanceDto.remark;
     return this.attendanceRepository.save(attendance);
   }
 
   async update(updateAttendanceDto: UpdateAttendanceDto): Promise<Attendance> {
     const now = new Date();
-    const attendance = await this.attendanceRepository.findOne({id: updateAttendanceDto.id})
+    const attendance = await this.attendanceRepository.findOne({ id: updateAttendanceDto.id })
     //クライアントからの取得したIDを元にユーザを検索
     //クライアントから取得したパラメータを設定
     attendance.type = updateAttendanceDto.type;
@@ -45,14 +47,14 @@ export class AttendanceService {
       .toISOString()
       .slice(0, 19)
       .replace('T', ' ');
-    attendance.student_id = updateAttendanceDto.student_id;
+    attendance.studentId = updateAttendanceDto.studentId;
     attendance.remark = updateAttendanceDto.remark;
     return this.attendanceRepository.save(attendance);
   }
 
   async updatetype(updatetypeAttendanceDto: UpdateTypeAttendanceDto): Promise<Attendance> {
     const now = new Date();
-    const attendance = await this.attendanceRepository.findOne({id: updatetypeAttendanceDto.id})
+    const attendance = await this.attendanceRepository.findOne({ id: updatetypeAttendanceDto.id })
     attendance.type = updatetypeAttendanceDto.type;
     attendance.updated_datetime = now
       .toISOString()
@@ -63,7 +65,7 @@ export class AttendanceService {
 
   async updateremark(updateremarkAttendanceDto: UpdateRemarkAttendanceDto): Promise<Attendance> {
     const now = new Date();
-    const attendance = await this.attendanceRepository.findOne({id: updateremarkAttendanceDto.id})
+    const attendance = await this.attendanceRepository.findOne({ id: updateremarkAttendanceDto.id })
     attendance.remark = updateremarkAttendanceDto.remark;
     attendance.updated_datetime = now
       .toISOString()
@@ -72,8 +74,28 @@ export class AttendanceService {
     return this.attendanceRepository.save(attendance);
   }
 
+
+
+  async findbyclassid(id: Number): Promise<any> {
+    // const user = await this.attendanceRepository.createQueryBuilder("attendance")
+    //   .innerJoinAndSelect("student.attendances", "attendance");
+    return this.attendanceRepository.createQueryBuilder('attendance')
+      // ^^^^^^^^^^^^^^^^
+      .leftJoinAndSelect(
+        'attendance.student',
+        'student',
+      );
+    
+  }
+
+  // async findbyclassid2(findbyclassid2SAttendanceDto: FindByClassId2AttendanceDto): Promise<Attendance[]> {
+  //   return this.attendanceRepository.find({class_id: findbyclassid2StudentDto.class_id});
+  // }
+
+
+
   async findbystudentid(findbystudentidattendanceDto: FindByStudentIdAttendanceDto): Promise<Attendance[]> {
-    return this.attendanceRepository.find({student_id: findbystudentidattendanceDto.student_id});
+    return this.attendanceRepository.find({ studentId: findbystudentidattendanceDto.studentId });
   }
 
   async findAll(): Promise<Attendance[]> {

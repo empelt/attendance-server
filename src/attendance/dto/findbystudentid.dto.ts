@@ -4,6 +4,6 @@ export class FindByStudentIdAttendanceDto {
     date: string;
     created_datetime: string;
     updated_datetime: string;
-    student_id: number;
+    studentId: number;
     remark: string;
 }

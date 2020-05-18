@@ -1,4 +1,4 @@
-export class UpdateAttendanceDto {
+export class FindByClassIdAttendanceDto {
     id: number;
     type: number;
     date: string;

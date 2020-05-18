@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Attendance } from '../attendance/attendance.entity'
 
 @Entity()
 export class Student {
@@ -25,6 +26,9 @@ export class Student {
 
   @Column()
   class_id: number;
+
+  @OneToMany(type => Attendance, attendance => attendance.student)
+    attendances: Attendance[];
 
   // @Column({ default: true })
   // isActive: boolean;
