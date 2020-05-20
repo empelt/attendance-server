@@ -4,9 +4,8 @@ import { Repository, createQueryBuilder } from 'typeorm';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
 import { FindByStudentIdAttendanceDto } from './dto/findbystudentid.dto';
-import { FindByClassIdAttendanceDto } from './dto/findbyclassid.dto';
-import { FindByClassId2AttendanceDto } from './dto/findbyclassid2.dto';
 import { UpdateTypeAttendanceDto } from './dto/update-type-attendance.dto';
+import { CountAttendanceDto } from './dto/count-attendance.dto';
 import { UpdateRemarkAttendanceDto } from './dto/update-remark-attendance.dto';
 import { Attendance } from './attendance.entity';
 
@@ -84,23 +83,15 @@ export class AttendanceService {
     return this.attendanceRepository.save(attendance);
   }
 
-  async findbyclassid(id: string): Promise<any> {
-    // const user = await this.attendanceRepository.createQueryBuilder("attendance")
-    //   .innerJoinAndSelect("student.attendances", "attendance");
+
+  async countattendance(id: number): Promise<any> {
     return this.attendanceRepository
       .createQueryBuilder('attendance')
-      .leftJoinAndSelect('attendance.student', 'student')
-      .where('sutdent.class_id = :class_id', { class_id: id })
-      .getMany();
-    // return this.attendanceRepository.find({
-    //   relations: ['student'],
-    // });
-
+      .select(['type','COUNT(*) as count'])
+      .where({studentId:id})
+      .groupBy('attendance.type')
+      .getRawMany();
   }
-
-  // async findbyclassid2(findbyclassid2SAttendanceDto: FindByClassId2AttendanceDto): Promise<Attendance[]> {
-  //   return this.attendanceRepository.find({class_id: findbyclassid2StudentDto.class_id});
-  // }
 
   async findbystudentid(
     findbystudentidattendanceDto: FindByStudentIdAttendanceDto,
