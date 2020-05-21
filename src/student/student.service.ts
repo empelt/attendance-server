@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, createQueryBuilder, getRepository } from 'typeorm';
+import { Repository, createQueryBuilder, getRepository,EntityManager,getConnection } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
@@ -71,5 +71,24 @@ export class StudentService {
     // return this.attendanceRepository.find({
     //   relations: ['student'],
     // });
+  }
+
+  async countattendance(id: number): Promise<any> {
+    const query = getConnection().query('SELECT type, studentId, count(type), first_name, last_name FROM new_schema.attendance inner join student on student.id = attendance.studentId group by studentId, type order by studentId, type;');
+    return query
+    // return this.studentRepository
+    // .createQueryBuilder('student')
+    // .select(['attendance.type','attendance.studentId','COUNT(attendance.type) as count', 'student.first_name', 'student.last_name','attendance.id'])
+    // .leftJoinAndSelect('student.attendances', 'attendance')
+    // .where('class_id = :class_id', { class_id: id })
+    // .groupBy('attendance.studentId')
+    // .addGroupBy('attendance.type')
+    // .getRawMany();
+    // return this.attendanceRepository
+    //   .createQueryBuilder('attendance')
+    //   .select(['type','COUNT(*) as count'])
+    //   .where({studentId:id})
+    //   .groupBy('attendance.type')
+    //   .getRawMany();
   }
 }

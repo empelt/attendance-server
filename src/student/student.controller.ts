@@ -37,4 +37,8 @@ export class StudentController {
     console.log('helo');
     return this.studentService.findbyclassid(id);
   }
+  @Get('countattendance/:id')
+  countattendance(@Param('id') id: number): Promise<any> {
+    return this.studentService.countattendance(id);
+  }
 }
