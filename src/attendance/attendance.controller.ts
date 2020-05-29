@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
 import { UpdateTypeAttendanceDto } from './dto/update-type-attendance.dto';
-import { CountAttendanceDto } from './dto/count-attendance.dto';
 import { UpdateRemarkAttendanceDto } from './dto/update-remark-attendance.dto';
 import { FindByStudentIdAttendanceDto } from './dto/findbystudentid.dto';
 import { Attendance } from './attendance.entity';

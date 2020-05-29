@@ -7,4 +7,5 @@ export class UpdateStudentDto {
     created_datetime: string;
     updated_datetime: string;
     class_id: number;
+    studentNumber: number;
 }

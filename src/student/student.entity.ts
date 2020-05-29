@@ -27,6 +27,9 @@ export class Student {
   @Column()
   class_id: number;
 
+  @Column()
+  studentNumber: number;
+
   @OneToMany(type => Attendance, attendance => attendance.student)
     attendances: Attendance[];
 

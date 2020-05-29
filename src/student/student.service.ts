@@ -21,6 +21,7 @@ export class StudentService {
     student.kana_first_name = createStudentDto.kana_first_name;
     student.kana_last_name = createStudentDto.kana_last_name;
     student.class_id = createStudentDto.class_id;
+    student.studentNumber = createStudentDto.studentNumber;
     student.created_datetime = now
       .toISOString()
       .slice(0, 19)
@@ -42,6 +43,7 @@ export class StudentService {
     student.kana_first_name = updateStudentDto.kana_first_name;
     student.kana_last_name = updateStudentDto.kana_last_name;
     student.class_id = updateStudentDto.class_id;
+    student.studentNumber = updateStudentDto.studentNumber;
     student.updated_datetime = now
       .toISOString()
       .slice(0, 19)
@@ -74,7 +76,7 @@ export class StudentService {
   }
 
   async countattendance(id: number): Promise<any> {
-    const query = getConnection().query('SELECT type, studentId, count(type) as count, first_name, last_name, class_id FROM new_schema.attendance inner join student on student.id = attendance.studentId group by studentId, type order by studentId, type;');
+    const query = getConnection().query('SELECT type, studentId, count(type) as count, first_name, last_name, class_id, studentNumber FROM new_schema.attendance inner join student on student.id = attendance.studentId group by studentId, type order by studentId, type;');
     return query
   }
 }

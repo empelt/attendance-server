@@ -6,4 +6,5 @@ export class UpdateAttendanceDto {
     updated_datetime: string;
     studentId: number;
     remark: string;
+    period: number;
 }

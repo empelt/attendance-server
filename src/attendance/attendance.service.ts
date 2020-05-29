@@ -5,7 +5,6 @@ import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
 import { FindByStudentIdAttendanceDto } from './dto/findbystudentid.dto';
 import { UpdateTypeAttendanceDto } from './dto/update-type-attendance.dto';
-import { CountAttendanceDto } from './dto/count-attendance.dto';
 import { UpdateRemarkAttendanceDto } from './dto/update-remark-attendance.dto';
 import { Attendance } from './attendance.entity';
 
@@ -32,6 +31,7 @@ export class AttendanceService {
       .replace('T', ' ');
     attendance.studentId = createAttendanceDto.studentId;
     attendance.remark = createAttendanceDto.remark;
+    attendance.period = createAttendanceDto.period;
     return this.attendanceRepository.save(attendance);
   }
 
@@ -40,8 +40,6 @@ export class AttendanceService {
     const attendance = await this.attendanceRepository.findOne({
       id: updateAttendanceDto.id,
     });
-    //クライアントからの取得したIDを元にユーザを検索
-    //クライアントから取得したパラメータを設定
     attendance.type = updateAttendanceDto.type;
     attendance.date = updateAttendanceDto.date;
     attendance.updated_datetime = now
@@ -50,6 +48,7 @@ export class AttendanceService {
       .replace('T', ' ');
     attendance.studentId = updateAttendanceDto.studentId;
     attendance.remark = updateAttendanceDto.remark;
+    attendance.period = updateAttendanceDto.period;
     return this.attendanceRepository.save(attendance);
   }
 

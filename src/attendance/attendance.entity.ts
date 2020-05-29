@@ -24,6 +24,9 @@ export class Attendance {
   @Column()
   remark: string;
 
+  @Column()
+  period: number;
+
   @ManyToOne(type => Student, student => student.attendances)
     student: Student;
   // @Column({ default: true })
