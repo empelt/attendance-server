@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, createQueryBuilder, getRepository,EntityManager,getConnection } from 'typeorm';
+import { Repository, getConnection, Column } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
+import { Stringifier } from 'csv-stringify';
 
 @Injectable()
 export class StudentService {
   constructor(
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
-  ) {}
+  ) { }
 
   create(createStudentDto: CreateStudentDto): Promise<Student> {
     const now = new Date();
@@ -78,5 +79,27 @@ export class StudentService {
   async countattendance(id: number): Promise<any> {
     const query = getConnection().query('SELECT type, studentId, count(type) as count, first_name, last_name, class_id, studentNumber FROM new_schema.attendance inner join student on student.id = attendance.studentId group by studentId, type order by studentId, type;');
     return query
+  }
+
+  async getCsvStream(): Promise<Stringifier> {
+    const qb = this.studentRepository.createQueryBuilder('student');
+    const stream = await qb.stream();
+    // csv-stringifyを初期化
+    const stringifier = new Stringifier({
+      header: true,
+      columns: ['id', 'name', 'age'],
+    });
+    
+    // // レコードのデータが読み込まれた
+    stream.on('data', res => {
+      const b = Buffer.from(JSON.stringify(res))
+      const a = JSON.parse(b.toString());
+      stringifier.write([a.student_id, a.student_first_name, a.student_last_name]);
+    });
+    // レコードの読み込みが終了したとき
+    stream.on('end', () => {
+      stringifier.end();
+    });
+    return stringifier
   }
 }

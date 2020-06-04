@@ -1,12 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Res} from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
 import { StudentService } from './student.service';
+import { Response } from 'express'
 
 @Controller('student')
 export class StudentController {
-  constructor(private readonly studentService: StudentService) {}
+  constructor(private readonly studentService: StudentService) { }
 
   @Post('create')
   create(@Body() createStudentDto: CreateStudentDto): Promise<Student> {
@@ -40,5 +41,12 @@ export class StudentController {
   @Get('countattendance/:id')
   countattendance(@Param('id') id: number): Promise<any> {
     return this.studentService.countattendance(id);
+  }
+
+  @Get('csv/:id')
+  async getCsv(@Res() res: Response){
+    const strigifier = await this.studentService.getCsvStream();
+    res.setHeader('Content-Type', 'text/csv');
+    return strigifier.pipe(res);
   }
 }
