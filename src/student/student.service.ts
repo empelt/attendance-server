@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getConnection, Column } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { CountStudentDto } from './dto/countstudent.dto';
 import { Student } from './student.entity';
 import { Stringifier } from 'csv-stringify';
 
@@ -63,19 +64,24 @@ export class StudentService {
   async remove(id: string): Promise<void> {
     await this.studentRepository.delete(id);
   }
+
   async findbyclassid(id: string): Promise<any> {
-    // const user = await this.attendanceRepository.createQueryBuilder("attendance")
-    //   .innerJoinAndSelect("student.attendances", "attendance");
     return this.studentRepository
       .createQueryBuilder('student')
       .leftJoinAndSelect('student.attendances', 'attendance')
       .where('class_id = :class_id', { class_id: id })
       .getMany();
-    // return this.attendanceRepository.find({
-    //   relations: ['student'],
-    // });
   }
 
+  async countstudents(countStudentDto: CountStudentDto): Promise<any> {
+    return this.studentRepository
+      .createQueryBuilder('student')
+      .leftJoinAndSelect('student.attendances', 'attendance')
+      .where('class_id = :class_id', { class_id: countStudentDto.id })
+      // .where('date = :date', {attendances.date: countStudentDto.date})
+      .getMany();
+  }
+  //集計
   async countattendance(id: number): Promise<any> {
     const query = getConnection().query('SELECT type, studentId, count(type) as count, first_name, last_name, class_id, studentNumber FROM new_schema.attendance inner join student on student.id = attendance.studentId group by studentId, type order by studentId, type;');
     return query
@@ -83,13 +89,13 @@ export class StudentService {
 
   async getCsvStream(): Promise<Stringifier> {
     const qb = this.studentRepository.createQueryBuilder('student');
+    // const qb = getConnection().query('SELECT type, studentId, count(type) as count, first_name, last_name, class_id, studentNumber FROM new_schema.attendance inner join student on student.id = attendance.studentId group by studentId, type order by studentId, type;');
     const stream = await qb.stream();
     // csv-stringifyを初期化
     const stringifier = new Stringifier({
       header: true,
       columns: ['id', 'name', 'age'],
     });
-    
     // // レコードのデータが読み込まれた
     stream.on('data', res => {
       const b = Buffer.from(JSON.stringify(res))

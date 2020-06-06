@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Res} from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { CountStudentDto } from './dto/countstudent.dto';
 import { Student } from './student.entity';
 import { StudentService } from './student.service';
 import { Response } from 'express'
@@ -43,6 +44,10 @@ export class StudentController {
     return this.studentService.countattendance(id);
   }
 
+  @Post('countstudents')
+  countstudents(@Body() countStudentDto: CountStudentDto): Promise<any> {
+    return this.studentService.countstudents(countStudentDto);
+  }
   @Get('csv/:id')
   async getCsv(@Res() res: Response){
     const strigifier = await this.studentService.getCsvStream();

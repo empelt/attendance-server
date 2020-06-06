@@ -18,8 +18,6 @@ export class AttendanceService {
   create(createAttendanceDto: CreateAttendanceDto): Promise<Attendance> {
     const now = new Date();
     const attendance = new Attendance();
-    attendance.id = createAttendanceDto.id;
-    attendance.type = createAttendanceDto.type;
     attendance.date = createAttendanceDto.date;
     attendance.created_datetime = now
       .toISOString()
@@ -58,6 +56,7 @@ export class AttendanceService {
     const now = new Date();
     const attendance = await this.attendanceRepository.findOne({
       id: updatetypeAttendanceDto.id,
+      date: updatetypeAttendanceDto.date
     });
     attendance.type = updatetypeAttendanceDto.type;
     attendance.updated_datetime = now
@@ -73,6 +72,7 @@ export class AttendanceService {
     const now = new Date();
     const attendance = await this.attendanceRepository.findOne({
       id: updateremarkAttendanceDto.id,
+      date: updateremarkAttendanceDto.date
     });
     attendance.remark = updateremarkAttendanceDto.remark;
     attendance.updated_datetime = now
@@ -83,14 +83,14 @@ export class AttendanceService {
   }
 
 
-  async countattendance(id: number): Promise<any> {
-    return this.attendanceRepository
-      .createQueryBuilder('attendance')
-      .select(['type','COUNT(*) as count'])
-      .where({studentId:id})
-      .groupBy('attendance.type')
-      .getRawMany();
-  }
+  // async countattendance(id: number): Promise<any> {
+  //   return this.attendanceRepository
+  //     .createQueryBuilder('attendance')
+  //     .select(['type','COUNT(*) as count'])
+  //     .where({studentId:id})
+  //     .groupBy('attendance.type')
+  //     .getRawMany();
+  // }
 
   async findbystudentid(
     findbystudentidattendanceDto: FindByStudentIdAttendanceDto,

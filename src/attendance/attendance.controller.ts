@@ -36,10 +36,10 @@ export class AttendanceController {
     return this.attendanceService.findbystudentid(findbystudentidattendanceDto);
   }
 
-  @Get('countattendance/:id')
-  countattendance(@Param('id') id: number): Promise<any> {
-    return this.attendanceService.countattendance(id);
-  }
+  // @Get('countattendance/:id')
+  // countattendance(@Param('id') id: number): Promise<any> {
+  //   return this.attendanceService.countattendance(id);
+  // }
 
   @Get()
   findAll(): Promise<Attendance[]> {
